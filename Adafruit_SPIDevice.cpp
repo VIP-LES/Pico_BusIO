@@ -73,20 +73,20 @@ Adafruit_SPIDevice::Adafruit_SPIDevice(int8_t cspin, int8_t sckpin,
   _miso = misopin;
   _mosi = mosipin;
 
-#ifdef BUSIO_USE_FAST_PINIO
-  csPort = (BusIO_PortReg *)portOutputRegister(digitalPinToPort(cspin));
-  csPinMask = digitalPinToBitMask(cspin);
-  if (mosipin != -1) {
-    mosiPort = (BusIO_PortReg *)portOutputRegister(digitalPinToPort(mosipin));
-    mosiPinMask = digitalPinToBitMask(mosipin);
-  }
-  if (misopin != -1) {
-    misoPort = (BusIO_PortReg *)portInputRegister(digitalPinToPort(misopin));
-    misoPinMask = digitalPinToBitMask(misopin);
-  }
-  clkPort = (BusIO_PortReg *)portOutputRegister(digitalPinToPort(sckpin));
-  clkPinMask = digitalPinToBitMask(sckpin);
-#endif
+// #ifdef BUSIO_USE_FAST_PINIO
+//   csPort = (BusIO_PortReg *)portOutputRegister(digitalPinToPort(cspin));
+//   csPinMask = digitalPinToBitMask(cspin);
+//   if (mosipin != -1) {
+//     mosiPort = (BusIO_PortReg *)portOutputRegister(digitalPinToPort(mosipin));
+//     mosiPinMask = digitalPinToBitMask(mosipin);
+//   }
+//   if (misopin != -1) {
+//     misoPort = (BusIO_PortReg *)portInputRegister(digitalPinToPort(misopin));
+//     misoPinMask = digitalPinToBitMask(misopin);
+//   }
+//   clkPort = (BusIO_PortReg *)portOutputRegister(digitalPinToPort(sckpin));
+//   clkPinMask = digitalPinToBitMask(sckpin);
+// #endif
 
   _freq = freq;
   _dataOrder = dataOrder;
@@ -309,7 +309,7 @@ void Adafruit_SPIDevice::endTransaction(void) {
  */
 void Adafruit_SPIDevice::setChipSelect(int value) {
   if (_cs != -1) {
-    digitalWrite(_cs, value);
+    digitalWrite(_cs, (PinStatus) value);
   }
 }
 
