@@ -1,0 +1,3 @@
+add_library(Adafruit_Sensor EXCLUDE_FROM_ALL ${CMAKE_CURRENT_LIST_DIR}/Adafruit_Sensor.cpp)
+target_include_directories(Adafruit_Sensor PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+target_link_libraries(Adafruit_Sensor PRIVATE ArduinoShim)

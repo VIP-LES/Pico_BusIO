@@ -35,4 +35,5 @@ target_link_libraries(pico_busio PUBLIC
     ArduinoShim
     Wire
     SPI
+    Adafruit_Sensor
 )
