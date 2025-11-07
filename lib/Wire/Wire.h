@@ -26,13 +26,15 @@
 
 #pragma once
 
-#include <cstdint>
-#include "ArduinoShim.h"
-#include "HardwareI2C.h"
-#include "Print.h"
+#include "api/HardwareI2C.h"
+#include "api/Common.h"
+#include <hardware/i2c.h>
 
-// #include "api/HardwareI2C.h"
-#include "hardware/i2c.h"
+#define PIN_WIRE0_SDA 16
+#define PIN_WIRE0_SCL 17
+
+#define PIN_WIRE1_SDA 2
+#define PIN_WIRE1_SCL 3
 
 // WIRE_HAS_END means Wire has end()
 #define WIRE_HAS_END 1

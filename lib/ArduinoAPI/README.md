@@ -1,0 +1,2 @@
+# ArduinoAPI
+A collection of source code and header API definitions that the Arduino ecosystem is defined from. We need these cherry-picked files to define the I2C and SPI superclasses that busio uses.

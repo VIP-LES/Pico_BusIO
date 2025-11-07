@@ -19,22 +19,16 @@
 */
 
 #include <hardware/gpio.h>
-#include <hardware/sync.h>
 #include <hardware/irq.h>
 #include <hardware/spi.h>
+#include <hardware/sync.h>
 #include <hardware/structs/iobank0.h>
 #include <map>
 #include "HardwareSPI.h"
+// #include <Arduino.h>
 using namespace arduino;
 
-static uint32_t ints = 0;
-void noInterrupts() {
-  ints = save_and_disable_interrupts();
-}
-
-void interrupts() {
-  restore_interrupts(ints);
-}
+static uint32_t saved_interrupts;
 
 /**
     @brief Helper routined shared by SPI and SoftwareSPI
@@ -123,7 +117,7 @@ public:
     if (_usingIRQs.empty()) {
       return;
     }
-    noInterrupts(); // Avoid possible race conditions if IRQ comes in while main
+    saved_interrupts = save_and_disable_interrupts(); // Avoid possible race conditions if IRQ comes in while main
                     // app is in middle of this
     // Disable any IRQs that are being used for SPI
     io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num()
@@ -149,7 +143,7 @@ public:
              (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3],
              (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0,
              (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
-    interrupts();
+    restore_interrupts(saved_interrupts);
   }
 
   /**
@@ -159,7 +153,7 @@ public:
     if (_usingIRQs.empty()) {
       return;
     }
-    noInterrupts(); // Avoid race condition so the GPIO IRQs won't come back
+    saved_interrupts = save_and_disable_interrupts(); // Avoid race condition so the GPIO IRQs won't come back
                     // until all state is restored
     DEBUGSPI("SPI::endTransaction()\n");
     // Re-enable IRQs
@@ -177,7 +171,7 @@ public:
              (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3],
              (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0,
              (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
-    interrupts();
+    restore_interrupts(saved_interrupts);
   }
 
   /**

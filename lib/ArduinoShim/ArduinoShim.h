@@ -3,6 +3,10 @@
 #pragma once
 
 #include "hardware/gpio.h"
+#include "hardware/sync.h"
+#include "pico/time.h"
+
+#include <math.h>
 #include "Common.h"
 
 inline void pinMode(pin_size_t pin, PinMode mode) {
@@ -29,10 +33,20 @@ inline void digitalWrite(pin_size_t pin, PinStatus state) {
   gpio_put(pin, state);
 }
 
-
-
-#ifndef max
-template <typename T> static inline T max(const T &a, const T &b) {
-  return (a > b) ? a : b;
+inline void delayMicroseconds(uint us) {
+    sleep_us(us);
 }
-#endif
+
+// static uint32_t ints = 0;
+// inline void noInterrupts() { ints = save_and_disable_interrupts(); }
+// inline void interrupts() { restore_interrupts(ints); }
+
+// inline void delayMicroseconds(uint us) {
+//   sleep_us(us);
+// }
+
+// #ifndef max
+// template <typename T> static inline T max(const T &a, const T &b) {
+//   return (a > b) ? a : b;
+// }
+// #endif

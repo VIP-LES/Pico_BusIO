@@ -10,11 +10,19 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 
     # Pull in Pico SDK
+    set(PICO_BOARD "pimoroni_pico_plus2_rp2350")
     include(pico_sdk_import)
 
     project(Pico_BusIO C CXX ASM)
 
     pico_sdk_init()
+
+    include(Adafruit_BMP3XX)
+    add_executable(main extra/src/main.cpp)
+    target_link_libraries(main PUBLIC Adafruit_BMP3XX pico_stdlib)
+    pico_enable_stdio_uart(main 0)
+    pico_enable_stdio_usb(main 1)
+    pico_add_extra_outputs(main)
 
 endif()
 
@@ -23,21 +31,18 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-include(ArduinoCore-API)
+add_subdirectory(lib)
 
-add_subdirectory(ArduinoShim)
-add_subdirectory(SPI)
-add_subdirectory(Wire)
 
-file(GLOB SRC_FILES
-    *.cpp
+add_library(Pico_BusIO 
+    src/Adafruit_BusIO_Register.cpp 
+    src/Adafruit_GenericDevice.cpp 
+    src/Adafruit_I2CDevice.cpp 
+    src/Adafruit_SPIDevice.cpp
 )
-
-add_library(Pico_BusIO ${SRC_FILES})
-target_include_directories(Pico_BusIO PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(Pico_BusIO PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
 target_link_libraries(Pico_BusIO PUBLIC
-    pico_stdlib
-    Wire
     ArduinoShim
+    Wire
     SPI
 )
