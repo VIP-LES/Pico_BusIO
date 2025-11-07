@@ -1,3 +1,0 @@
-[submodule "external/ArduinoCore-API"]
-	path = external/ArduinoCore-API
-	url = https://github.com/earlephilhower/ArduinoCore-API.git
