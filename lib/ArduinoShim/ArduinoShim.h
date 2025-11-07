@@ -34,7 +34,13 @@ inline void digitalWrite(pin_size_t pin, PinStatus state) {
 }
 
 inline void delayMicroseconds(uint us) {
-    sleep_us(us);
+  sleep_us(us);
+}
+inline void delay(unsigned long ms) {
+  sleep_ms(ms);
+}
+inline unsigned long millis() {
+  return to_ms_since_boot(get_absolute_time());
 }
 
 // static uint32_t ints = 0;
