@@ -35,7 +35,7 @@ file(GLOB SRC_FILES
 
 add_library(Pico_BusIO ${SRC_FILES})
 target_include_directories(Pico_BusIO PUBLIC ${CMAKE_CURRENT_LIST_DIR})
-target_link_libraries(Pico_BusIO PRIVATE
+target_link_libraries(Pico_BusIO PUBLIC
     pico_stdlib
     Wire
     ArduinoShim
