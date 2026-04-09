@@ -25,6 +25,8 @@ inline void pinMode(pin_size_t pin, PinMode mode) {
   }
 }
 
+inline void yield() {}
+
 inline PinStatus digitalRead(pin_size_t pin) {
   return (gpio_get(pin)) ? HIGH : LOW;
 }
